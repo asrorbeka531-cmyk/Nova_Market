@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOVA — Zamonaviy va Minimalistik Onlayn Do'kon</title>
+  <meta name="description" content="Eng so'nggi gadjetlar, moda va uy-ro'zg'or mahsulotlari. 1 kunda bepul yetkazib berish va halol muddatli to'lov.">
+  
+  <!-- Kiberxavfsizlik Himoyasi (CSP, Anti-Clickjacking, Anti-Sniffing) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https: data: blob:; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https:;">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Maxsus dinamik rang stillari -->
+  <style id="custom-accent-style"></style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-200 antialiased selection:bg-indigo-500 selection:text-white pb-20 md:pb-8">
+
+  <!-- Yuqori e'lon lentasi (Top announcement bar) -->
+  <div id="top-announcement-bar" class="bg-gradient-to-r from-indigo-950 via-zinc-900 to-indigo-950 text-zinc-300 text-xs py-2 px-4 text-center border-b border-zinc-800 flex items-center justify-center gap-2">
+    <span id="top-bar-badge" data-editable="topbar_badge" title="Tahrirlash uchun bosing" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold text-[11px]">
+      <i data-lucide="sparkles" class="w-3 h-3 text-indigo-400"></i> Maxsus aksiya
+    </span>
+    <span id="top-bar-main-text" data-editable="topbar_main" title="Tahrirlash uchun bosing">Barcha buyurtmalarga <b>NOVA10</b> promokodi bilan 10% chegirma!</span>
+    <span class="hidden sm:inline text-zinc-500">•</span>
+    <span id="top-bar-delivery-text" data-editable="topbar_delivery" title="Tahrirlash uchun bosing" class="hidden sm:inline font-medium text-emerald-400 flex items-center gap-1">
+      <i data-lucide="truck" class="w-3 h-3"></i> O'zbekiston bo'ylab 1 kunda yetkazish
+    </span>
+  </div>
+
+  <!-- ASOSIY HEADER (Sticky Glassmorphic Navbar) -->
+  <header class="sticky top-0 z-40 glass border-b border-zinc-200/80 dark:border-zinc-800/80 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-4">
+        
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3 group" data-editable="brand" title="Brend va logotipni sozlash">
+          <div id="nav-brand-logo" class="w-10 h-10 rounded-2xl bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-zinc-900 font-black text-xl tracking-tighter shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+            N
+          </div>
+          <div>
+            <span class="text-xl font-extrabold tracking-tight text-zinc-900 dark:text-white flex items-center gap-1">
+              <span id="nav-brand-name">NOVA</span><span class="text-indigo-600 dark:text-indigo-400">.</span>
+            </span>
+            <span id="nav-brand-tagline" class="block text-[10px] tracking-widest text-zinc-400 font-semibold uppercase -mt-1">Market</span>
+          </div>
+        </a>
+
+        <!-- Keng qidiruv paneli (Smart Live Search) -->
+        <div class="flex-1 max-w-2xl mx-2 hidden sm:block">
+          <div class="relative flex items-center">
+            <i data-lucide="search" class="w-4 h-4 text-zinc-400 absolute left-4 pointer-events-none"></i>
+            <input 
+              type="text" 
+              id="search-input" 
+              placeholder="Mahsulotlar, brendlar yoki toifalarni qidiring..." 
+              class="w-full pl-11 pr-12 py-3 bg-zinc-100 dark:bg-zinc-900/90 text-sm rounded-2xl border border-transparent focus:border-indigo-500/40 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 transition-all shadow-inner outline-none"
+            >
+            <div class="absolute right-3 text-xs text-zinc-400 border border-zinc-300 dark:border-zinc-700 px-1.5 py-0.5 rounded-md pointer-events-none">
+              ⌘K
+            </div>
+          </div>
+        </div>
+
+        <!-- O'ng tomondagi tugmalar (Theme, Wishlist, Cart, Admin) -->
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          
+          <!-- Tungi rejim tugmasi -->
+          <button 
+            id="theme-toggle" 
+            class="p-2.5 rounded-2xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+            title="Rejimni almashtirish"
+          >
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-amber-400"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-zinc-700"></i>
+          </button>
+
+          <!-- Sevimlilar (Wishlist) -->
+          <button 
+            id="open-wishlist-btn" 
+            class="relative p-2.5 rounded-2xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+            title="Sevimlilar"
+          >
+            <i data-lucide="heart" class="w-5 h-5"></i>
+            <span id="wishlist-badge" class="hidden absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow">
+              0
+            </span>
+          </button>
+
+          <!-- Savat tugmasi -->
+          <button 
+            id="open-cart-btn" 
+            class="relative flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 text-sm font-semibold transition shadow-md active:scale-95"
+            title="Savatni ko'rish"
+          >
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            <span class="hidden md:inline">Savat</span>
+            <span id="cart-badge" class="hidden px-2 py-0.5 rounded-full bg-indigo-600 text-white dark:bg-zinc-900 text-xs font-bold shadow-sm">
+              0
+            </span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobil qidiruv qatori -->
+      <div class="pb-3 sm:hidden">
+        <div class="relative flex items-center">
+          <i data-lucide="search" class="w-4 h-4 text-zinc-400 absolute left-3.5 pointer-events-none"></i>
+          <input 
+            type="text" 
+            id="mobile-search-input" 
+            oninput="document.getElementById('search-input').value = this.value; document.getElementById('search-input').dispatchEvent(new Event('input'))"
+            placeholder="Mahsulotlarni qidiring..." 
+            class="w-full pl-10 pr-4 py-2.5 bg-zinc-100 dark:bg-zinc-900 text-sm rounded-xl border border-transparent focus:border-indigo-500 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 outline-none"
+          >
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ASOSIY KONTEYNER -->
+  <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+
+    <!-- HERO BANNER SECTION (Eye-catching & Magnetic) -->
+    <section id="section-hero" data-section-id="hero" class="visual-section-container relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-zinc-950 via-zinc-900 to-indigo-950 text-white p-6 sm:p-10 lg:p-12 border border-zinc-800/80 shadow-2xl">
+      <!-- Visual Toolbar for section -->
+      <div class="visual-section-toolbar absolute top-3 right-3 z-30 hidden items-center gap-1 bg-zinc-900/90 backdrop-blur border border-indigo-500/50 p-1.5 rounded-2xl shadow-xl text-white text-xs">
+        <span class="px-2 py-0.5 rounded-lg bg-indigo-600/30 text-indigo-300 font-bold text-[10px] uppercase">Bosh Banner</span>
+        <button type="button" class="section-move-up-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="hero" title="Yuqoriga ko'chirish"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-move-down-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="hero" title="Pastga ko'chirish"><i data-lucide="arrow-down" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-toggle-hide-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="hero" title="Yashirish"><i data-lucide="eye" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-edit-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="hero" title="Bannerni sozlash"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>
+      </div>
+
+      <!-- Glow ambient background -->
+      <div class="absolute -right-24 -top-24 w-96 h-96 bg-indigo-600/30 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-24 -bottom-24 w-80 h-80 bg-pink-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- Chap matn bloki -->
+        <div class="lg:col-span-7 space-y-5">
+          <div id="hero-pill-text" data-editable="hero_pill" title="Nishon matnini tahrirlash" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-xs font-semibold tracking-wide text-indigo-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>2026-yilning Eng Saralangan To'plami</span>
+          </div>
+          
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15]">
+            <span id="hero-title-line1" data-editable="hero_title1" title="1-qator sarlavhani tahrirlash">Sifat va Minimalizm.</span> <br>
+            <span id="hero-title-line2" data-editable="hero_title2" title="2-qator sarlavhani tahrirlash" class="bg-gradient-to-r from-indigo-300 via-white to-pink-300 bg-clip-text text-transparent">
+              O'zgacha tajriba bilan.
+            </span>
+          </h1>
+
+          <p id="hero-description" data-editable="hero_desc" title="Banner tavsifini tahrirlash" class="text-zinc-400 text-sm sm:text-base max-w-xl font-normal leading-relaxed">
+            Biz ortiqcha shovqinlardan xoli, faqat eng sifatli flagman mahsulotlarni jamladik. 1 kunda uyingizga bepul yetkazamiz va qulay bo'lib to'lashni taqdim etamiz.
+          </p>
+
+          <div class="pt-2 flex flex-wrap items-center gap-3">
+            <a href="#products-section" class="px-6 py-3.5 rounded-2xl bg-white text-zinc-900 font-bold text-sm hover:bg-zinc-100 transition shadow-lg flex items-center gap-2 group">
+              <span id="hero-btn-text" data-editable="hero_btn" title="Tugma matnini tahrirlash">Xaridni boshlash</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+            <button onclick="document.getElementById('search-input').focus()" class="px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/10 text-white font-medium text-sm transition">
+              Katalog bo'ylab qidirish
+            </button>
+          </div>
+        </div>
+
+        <!-- O'ng blok: Kunning maxsus taklifi (Flash Deal Card) -->
+        <div class="lg:col-span-5">
+          <div class="glass-card rounded-3xl p-5 border border-white/10 text-white shadow-2xl relative overflow-hidden group">
+            
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-full bg-rose-500 text-white text-[11px] font-extrabold tracking-wide uppercase flex items-center gap-1">
+                  <i data-lucide="flame" class="w-3.5 h-3.5 fill-white"></i> 
+                  <span id="hero-flash-title" data-editable="flash_title" title="Taklif sarlavhasini tahrirlash">Kunning taklifi</span>
+                </span>
+                <span id="hero-flash-badge" data-editable="flash_badge" title="Chegirma matnini tahrirlash" class="text-xs text-zinc-400 font-medium">-25% gacha</span>
+              </div>
+
+              <!-- Jonli taymer -->
+              <div class="flex items-center gap-1 text-xs font-mono font-bold bg-zinc-900/80 px-2.5 py-1 rounded-xl border border-zinc-800">
+                <span id="timer-hours" class="text-amber-400">06</span>:
+                <span id="timer-minutes" class="text-amber-400">42</span>:
+                <span id="timer-seconds" class="text-amber-400">15</span>
+              </div>
+            </div>
+
+            <!-- Spotlight mahsulot konteyneri -->
+            <div id="flash-deal-container" data-editable="flash_product" title="Kunning taklifi mahsulotini tanlash">
+              <!-- app.js orqali dinamik chiqariladi -->
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ISHONCH VA AFZALLIKLAR PANELI (Trust Factors) -->
+    <section id="section-trust" data-section-id="trust" class="visual-section-container relative">
+      <div class="visual-section-toolbar absolute -top-3 right-3 z-30 hidden items-center gap-1 bg-zinc-900/90 backdrop-blur border border-indigo-500/50 p-1.5 rounded-2xl shadow-xl text-white text-xs">
+        <span class="px-2 py-0.5 rounded-lg bg-indigo-600/30 text-indigo-300 font-bold text-[10px] uppercase">Afzalliklar</span>
+        <button type="button" class="section-move-up-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="trust" title="Yuqoriga ko'chirish"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-move-down-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="trust" title="Pastga ko'chirish"><i data-lucide="arrow-down" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-toggle-hide-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="trust" title="Yashirish"><i data-lucide="eye" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-edit-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="trust" title="Afzalliklarni sozlash"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>
+      </div>
+
+      <div id="trust-factors-container" class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <!-- Dinamik generatsiya qilinadi -->
+      </div>
+    </section>
+
+    <!-- KATEGORIYALAR PANELI (Scrollable modern pills) -->
+    <section id="section-categories" data-section-id="categories" class="visual-section-container relative space-y-3">
+      <div class="visual-section-toolbar absolute -top-3 right-3 z-30 hidden items-center gap-1 bg-zinc-900/90 backdrop-blur border border-indigo-500/50 p-1.5 rounded-2xl shadow-xl text-white text-xs">
+        <span class="px-2 py-0.5 rounded-lg bg-indigo-600/30 text-indigo-300 font-bold text-[10px] uppercase">Toifalar</span>
+        <button type="button" class="section-move-up-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="categories" title="Yuqoriga ko'chirish"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-move-down-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="categories" title="Pastga ko'chirish"><i data-lucide="arrow-down" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-toggle-hide-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="categories" title="Yashirish"><i data-lucide="eye" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="visual-add-cat-btn p-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1" title="Yangi toifa qo'shish"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Yangi toifa</span></button>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+          <span>Ommabop Toifalar</span>
+          <button type="button" id="store-add-category-btn" class="hidden visual-edit-inline px-2.5 py-1 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-500 transition shadow">
+            + Yangi Toifa
+          </button>
+        </h2>
+        <span class="text-xs text-zinc-400">Har bir toifani bosib tahrirlang yoki tanlang</span>
+      </div>
+
+      <div id="categories-container" class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <!-- Kategoriya tugmalari app.js orqali generatsiya qilinadi -->
+      </div>
+    </section>
+
+    <!-- MAXSUS AKSIYA VA REKLAMA BANNERI (Promo Banner Section) -->
+    <section id="section-promo-banner" data-section-id="promo_banner" class="visual-section-container relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900 via-purple-900 to-zinc-950 text-white p-6 sm:p-10 border border-zinc-800 shadow-xl">
+      <div class="visual-section-toolbar absolute top-3 right-3 z-30 hidden items-center gap-1 bg-zinc-900/90 backdrop-blur border border-indigo-500/50 p-1.5 rounded-2xl shadow-xl text-white text-xs">
+        <span class="px-2 py-0.5 rounded-lg bg-indigo-600/30 text-indigo-300 font-bold text-[10px] uppercase">Promo Banner</span>
+        <button type="button" class="section-move-up-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="promo_banner" title="Yuqoriga ko'chirish"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-move-down-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="promo_banner" title="Pastga ko'chirish"><i data-lucide="arrow-down" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-toggle-hide-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="promo_banner" title="Yashirish"><i data-lucide="eye" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-edit-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="promo_banner" title="Bannerni sozlash"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>
+      </div>
+
+      <div class="relative z-10 max-w-2xl space-y-3">
+        <span id="promo-banner-badge" data-editable="promo_badge" title="Aksiya nishonini tahrirlash" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 font-bold text-xs border border-rose-500/30">
+          🔥 CHEGIRMALAR MAVSUMI
+        </span>
+        <h2 id="promo-banner-title" data-editable="promo_title" title="Aksiya sarlavhasini tahrirlash" class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+          Bahorgi Eng Katta Aksiya — 50% gacha Chegirmalar!
+        </h2>
+        <p id="promo-banner-desc" data-editable="promo_desc" title="Aksiya tavsifini tahrirlash" class="text-zinc-300 text-sm leading-relaxed">
+          Barcha flagman smartfonlar, noutbuklar va gadjetlarga maxsus narxlar. BTS Express orqali bepul yetkazib berish.
+        </p>
+        <div class="pt-1">
+          <a id="promo-banner-btn" data-editable="promo_btn" title="Tugma matnini tahrirlash" href="#products-section" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white text-zinc-950 font-bold text-sm hover:bg-zinc-100 transition shadow-lg">
+            <span>Aksiyani ko'rish</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+      <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    </section>
+
+    <!-- MAHSULOTLAR RO'YXATI (Main Catalog Grid) -->
+    <section id="section-products" data-section-id="products" class="visual-section-container relative space-y-4">
+      <div class="visual-section-toolbar absolute -top-3 right-3 z-30 hidden items-center gap-1 bg-zinc-900/90 backdrop-blur border border-indigo-500/50 p-1.5 rounded-2xl shadow-xl text-white text-xs">
+        <span class="px-2 py-0.5 rounded-lg bg-indigo-600/30 text-indigo-300 font-bold text-[10px] uppercase">Mahsulotlar Vitrinasi</span>
+        <button type="button" class="section-move-up-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="products" title="Yuqoriga ko'chirish"><i data-lucide="arrow-up" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-move-down-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="products" title="Pastga ko'chirish"><i data-lucide="arrow-down" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="section-toggle-hide-btn p-1.5 rounded-xl hover:bg-zinc-800 text-zinc-300 hover:text-white" data-section="products" title="Yashirish"><i data-lucide="eye" class="w-3.5 h-3.5"></i></button>
+        <button type="button" class="visual-add-prod-btn p-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1" title="Yangi mahsulot qo'shish"><i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Yangi tovar</span></button>
+      </div>
+      
+      <!-- Boshqaruv satri: Mahsulotlar soni va saralash -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-2 border-b border-zinc-200/80 dark:border-zinc-800/80">
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="text-base font-bold text-zinc-900 dark:text-white">Do'kon Mahsulotlari</h3>
+            <button type="button" id="store-add-product-btn" class="hidden visual-edit-inline px-2.5 py-1 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-500 transition shadow">
+              + Yangi Mahsulot
+            </button>
+          </div>
+          <p id="products-count" class="text-xs text-zinc-500 dark:text-zinc-400">Yuklanmoqda...</p>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <label for="sort-select" class="text-xs text-zinc-500 whitespace-nowrap">Saralash:</label>
+          <select 
+            id="sort-select" 
+            class="px-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl text-xs font-medium text-zinc-800 dark:text-zinc-200 outline-none focus:border-indigo-500 transition w-full sm:w-auto"
+          >
+            <option value="popular">Eng ommabop</option>
+            <option value="price-low">Narx: Arzondan qimmatga</option>
+            <option value="price-high">Narx: Qimmatdan arzonga</option>
+            <option value="rating">Eng yuqori reyting</option>
+            <option value="newest">Yangi qo'shilganlar</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Mahsulotlar to'ri (Grid) -->
+      <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        <!-- Mahsulot kartalari app.js orqali joylanadi -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER SECTION (Clean Minimalist Footer) -->
+  <footer class="mt-20 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 py-12 text-zinc-600 dark:text-zinc-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <div class="space-y-3">
+        <div class="flex items-center gap-2" data-editable="brand" title="Brend nomini sozlash">
+          <div id="footer-brand-logo" class="w-8 h-8 rounded-xl bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-zinc-900 font-black text-sm overflow-hidden">
+            N
+          </div>
+          <span id="footer-brand-name" class="text-base font-extrabold text-zinc-900 dark:text-white">NOVA Market</span>
+        </div>
+        <p id="footer-about-text" data-editable="footer_about" title="Do'kon tavsifini tahrirlash" class="leading-relaxed">
+          O'zbekistondagi eng qulay, tezkor va estetik onlayn savdo platformasi. Sifatli mahsulotlar va yuqori darajadagi xizmat.
+        </p>
+        <div class="text-[11px] text-zinc-400 flex items-center gap-2">
+          <span id="footer-copyright" data-editable="footer_copyright" title="Mualliflik matnini tahrirlash">© 2026 NOVA Market. Barcha huquqlar himoyalangan.</span>
+          <span>•</span>
+          <a href="admin.html" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition underline underline-offset-2" title="Do'kon egasi uchun maxsus kabinet">Admin</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm mb-3">Xaridorlarga</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Yetkazib berish shartlari</a></li>
+          <li><a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Bo'lib to'lash (Muddatli to'lov)</a></li>
+          <li><a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Mahsulotni qaytarish</a></li>
+          <li><a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Kafolat va servis</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm mb-3">To'lov usullari</h4>
+        <p class="mb-3">Biz barcha xavfsiz mahalliy to'lov tizimlarini qo'llab-quvvatlaymiz:</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 font-semibold text-zinc-800 dark:text-zinc-200">Payme</span>
+          <span class="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 font-semibold text-zinc-800 dark:text-zinc-200">Click</span>
+          <span class="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 font-semibold text-zinc-800 dark:text-zinc-200">Uzum Pay</span>
+          <span class="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 font-semibold text-zinc-800 dark:text-zinc-200">Naqd / Karta</span>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm mb-3">Aloqa va qo'llab-quvvatlash</h4>
+        <ul class="space-y-2">
+          <li class="flex items-center gap-2">
+            <i data-lucide="phone" class="w-4 h-4 text-indigo-500"></i>
+            <span id="footer-phone" data-editable="footer_phone" title="Telefon raqamni tahrirlash">+998 (71) 200-00-00</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <i data-lucide="send" class="w-4 h-4 text-indigo-500"></i>
+            <span id="footer-telegram" data-editable="footer_telegram" title="Telegram havolani tahrirlash">@novamarket_bot</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <i data-lucide="clock" class="w-4 h-4 text-indigo-500"></i>
+            <span id="footer-hours" data-editable="footer_hours" title="Ish vaqtini tahrirlash">Har kuni 24/7 rejimda</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- MOBIL PASTKI NAVIGATSIYA (Mobile Bottom Tab Bar) -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 glass border-t border-zinc-200/80 dark:border-zinc-800/80 z-30 px-6 py-2.5 flex items-center justify-between">
+    <a href="#" class="flex flex-col items-center text-indigo-600 dark:text-indigo-400">
+      <i data-lucide="home" class="w-5 h-5"></i>
+      <span class="text-[10px] font-medium mt-0.5">Asosiy</span>
+    </a>
+    <a href="#products-section" class="flex flex-col items-center text-zinc-500 dark:text-zinc-400">
+      <i data-lucide="layout-grid" class="w-5 h-5"></i>
+      <span class="text-[10px] font-medium mt-0.5">Katalog</span>
+    </a>
+    <button id="mobile-cart-btn" class="flex flex-col items-center text-zinc-500 dark:text-zinc-400 relative">
+      <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+      <span id="mobile-cart-badge" class="hidden absolute -top-1 -right-2 w-4 h-4 rounded-full bg-indigo-600 text-white text-[9px] font-bold flex items-center justify-center">0</span>
+      <span class="text-[10px] font-medium mt-0.5">Savat</span>
+    </button>
+    <button id="mobile-wishlist-btn" class="flex flex-col items-center text-zinc-500 dark:text-zinc-400 relative">
+      <i data-lucide="heart" class="w-5 h-5"></i>
+      <span id="mobile-wishlist-badge" class="hidden absolute -top-1 -right-2 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">0</span>
+      <span class="text-[10px] font-medium mt-0.5">Saralangan</span>
+    </button>
+  </div>
+
+  <!-- SAVAT DRAWER (Slide-over Cart Panel) -->
+  <div id="cart-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  <aside id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full sm:w-[420px] bg-white dark:bg-zinc-900 border-l border-zinc-200 dark:border-zinc-800 z-50 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
+    
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-600"></i>
+        <h3 class="font-bold text-base text-zinc-900 dark:text-white">Savatcha</h3>
+      </div>
+      <button id="close-cart-btn" class="p-2 rounded-xl text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Drawer Content (Items) -->
+    <div class="flex-1 overflow-y-auto p-5 space-y-3">
+      <!-- Bo'sh savat holati -->
+      <div id="cart-empty" class="py-16 text-center space-y-3 hidden">
+        <div class="w-16 h-16 mx-auto rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400">
+          <i data-lucide="shopping-bag" class="w-8 h-8"></i>
+        </div>
+        <h4 class="font-semibold text-zinc-800 dark:text-zinc-200 text-sm">Savatchangiz bo'sh</h4>
+        <p class="text-xs text-zinc-400">Katalogdan o'zingizga yoqqan mahsulotlarni tanlang</p>
+      </div>
+
+      <!-- Mahsulotlar ro'yxati -->
+      <div id="cart-items-container" class="space-y-3"></div>
+    </div>
+
+    <!-- Drawer Footer (Subtotal, Promo, Checkout) -->
+    <div id="cart-footer" class="p-5 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 space-y-3.5">
+      <!-- Promokod inputi (Ixtiyoriy) -->
+      <div class="flex gap-2">
+        <input 
+          type="text" 
+          id="promo-input" 
+          placeholder="Promokod (ixtiyoriy: NOVA10)" 
+          class="flex-1 px-3 py-2 text-xs rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 outline-none uppercase font-semibold text-zinc-800 dark:text-zinc-100"
+        >
+        <button id="apply-promo-btn" class="px-3.5 py-2 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-xs font-semibold hover:bg-indigo-600 transition">
+          Qo'llash
+        </button>
+      </div>
+
+      <!-- Narxlar hisob-kitobi -->
+      <div class="space-y-1.5 text-xs text-zinc-600 dark:text-zinc-400">
+        <div class="flex justify-between">
+          <span>Mahsulotlar narxi:</span>
+          <span id="cart-subtotal" class="font-medium text-zinc-900 dark:text-zinc-100">0 so'm</span>
+        </div>
+        <div class="flex justify-between text-emerald-600 dark:text-emerald-400 font-medium">
+          <span>Chegirma:</span>
+          <span id="cart-discount">0 so'm</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Yetkazib berish:</span>
+          <span class="text-emerald-600 font-semibold">Bepul (1 kunda)</span>
+        </div>
+        <div class="flex justify-between text-sm font-bold text-zinc-900 dark:text-white pt-2 border-t border-zinc-200 dark:border-zinc-800">
+          <span>Jami to'lov:</span>
+          <span id="cart-total" class="text-base text-indigo-600 dark:text-indigo-400">0 so'm</span>
+        </div>
+      </div>
+
+      <button id="proceed-checkout-btn" class="w-full py-3.5 rounded-2xl bg-zinc-900 hover:bg-indigo-600 text-white dark:bg-white dark:text-zinc-900 dark:hover:bg-indigo-500 dark:hover:text-white font-bold text-sm transition-all duration-200 shadow-lg flex items-center justify-center gap-2">
+        <span>Buyurtmani rasmiylashtirish</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- SEVIMLILAR (WISHLIST) MODAL OYNASI -->
+  <div id="wishlist-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-lg w-full p-6 border border-zinc-200 dark:border-zinc-800 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="heart" class="w-5 h-5 text-rose-500 fill-rose-500"></i>
+          <h3 class="font-bold text-base text-zinc-900 dark:text-white">Sevimlilar Ro'yxati</h3>
+        </div>
+        <button id="close-wishlist-btn" class="p-1.5 rounded-xl text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto space-y-3">
+        <div id="wishlist-empty" class="py-12 text-center space-y-2 hidden">
+          <i data-lucide="heart" class="w-10 h-10 mx-auto text-zinc-300"></i>
+          <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Hozircha sevimlilar yo'q</p>
+          <p class="text-xs text-zinc-400">Mahsulotlardagi yurakcha tugmasini bosib saqlab qo'yishingiz mumkin</p>
+        </div>
+        <div id="wishlist-items-container" class="space-y-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAHSULOTNING BATAFSIL (QUICK VIEW) MODAL OYNASI -->
+  <div id="product-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-3xl w-full p-5 sm:p-7 border border-zinc-200 dark:border-zinc-800 shadow-2xl relative my-auto">
+      
+      <button id="close-product-modal-btn" class="absolute top-4 right-4 p-2 rounded-2xl bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition z-10">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+        
+        <!-- Chap: Galereya -->
+        <div class="space-y-3">
+          <div class="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+            <img id="modal-main-img" src="" alt="Product" class="w-full h-full object-cover">
+          </div>
+          <div id="modal-thumbnails" class="flex gap-2 overflow-x-auto pb-1"></div>
+        </div>
+
+        <!-- O'ng: Ma'lumotlar va tanlovlar -->
+        <div class="flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between text-xs text-zinc-500 mb-1">
+              <span id="modal-category" class="font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider text-[11px]"></span>
+              <div class="flex items-center text-amber-400">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                <span id="modal-rating" class="ml-1 font-bold text-zinc-800 dark:text-zinc-200"></span>
+                <span id="modal-reviews" class="ml-1 text-zinc-400"></span>
+              </div>
+            </div>
+
+            <h2 id="modal-title" class="text-lg sm:text-xl font-bold text-zinc-900 dark:text-white leading-snug"></h2>
+
+            <div class="mt-3 flex items-baseline gap-2">
+              <span id="modal-price" class="text-2xl font-black text-zinc-900 dark:text-white"></span>
+              <span id="modal-old-price" class="text-sm text-zinc-400 line-through"></span>
+            </div>
+
+            <div class="mt-1 flex flex-wrap items-center gap-2">
+              <span id="modal-monthly" class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-amber-50 text-amber-900 dark:bg-amber-950/40 dark:text-amber-300"></span>
+              <span id="modal-zakalat" class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60"></span>
+            </div>
+
+            <!-- Taxminiy Kargo Narxi -->
+            <div id="modal-cargo-wrapper" class="hidden mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+              <i data-lucide="plane" class="w-3.5 h-3.5 text-indigo-500"></i>
+              <span>Taxminiy kargo: <span id="modal-cargo-val"></span></span>
+            </div>
+
+            <p id="modal-description" class="mt-3 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed"></p>
+
+            <!-- Ranglar -->
+            <div class="mt-4">
+              <span class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Rangni tanlang:</span>
+              <div id="modal-colors" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- O'lchamlar / Xotira -->
+            <div class="mt-3">
+              <span class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">O'lcham / Variant:</span>
+              <div id="modal-sizes" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Xususiyatlar -->
+            <div class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+              <span class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">Asosiy xususiyatlar:</span>
+              <div id="modal-specs" class="space-y-1"></div>
+            </div>
+          </div>
+
+          <!-- Tugmalar -->
+          <div class="pt-4 flex gap-2">
+            <button id="modal-add-to-cart-btn" class="flex-1 py-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 shadow-md">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              <span>Savatga qo'shish</span>
+            </button>
+            <button id="modal-fast-buy-btn" class="px-4 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5">
+              <i data-lucide="zap" class="w-4 h-4"></i>
+              <span>1 bosishda xarid</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BUYURTMA RASMIYLASHTIRISH (CHECKOUT) MODALI -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-lg w-full p-6 border border-zinc-200 dark:border-zinc-800 shadow-2xl relative my-auto">
+      
+      <button id="close-checkout-btn" class="absolute top-4 right-4 p-2 rounded-xl text-zinc-400 hover:text-zinc-700 dark:hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Forma qismi -->
+      <div id="checkout-form-container" class="space-y-4">
+        <div>
+          <h3 class="text-lg font-bold text-zinc-900 dark:text-white">Buyurtmani rasmiylashtirish</h3>
+          <p class="text-xs text-zinc-400">BTS Express Pochta orqali O'zbekiston bo'ylab yetkazish</p>
+        </div>
+
+        <form id="checkout-form" class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Ism va familiyangiz *</label>
+            <input type="text" id="checkout-name" required placeholder="Masalan: Sardor Aliyev" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Telefon raqamingiz *</label>
+            <input type="tel" id="checkout-phone" required placeholder="+998 (90) 123-45-67" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Telegram foydalanuvchi nomi (ixtiyoriy)</label>
+            <div class="relative">
+              <input type="text" id="checkout-telegram" placeholder="@username (masalan: @sardor_ali)" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500">
+            </div>
+            <p class="text-[10px] text-zinc-400 mt-1">Do'kon egasi Telegram orqali siz bilan tezroq bog'lanishi uchun</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Yetkazib berish manzili *</label>
+            <textarea id="checkout-address" required rows="2" placeholder="Viloyat, shahar/tuman, ko'cha va uy raqamingiz" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500"></textarea>
+          </div>
+
+          <!-- Yetkazib berish muddati ma'lumotnomasi -->
+          <div class="p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 space-y-1.5">
+            <div class="flex items-center gap-2 text-indigo-700 dark:text-indigo-300 font-bold text-xs">
+              <i data-lucide="truck" class="w-4 h-4 text-indigo-500"></i>
+              <span>Yetkazib berish muddati: Uzog'i 10 kunda</span>
+            </div>
+            <p class="text-[11px] text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              📦 Barcha buyurtmalar O'zbekiston bo'ylab uzog'i <strong>10 kun ichida</strong> yetkaziladi. Buyurtma tasdiqlangach do'kon egasi telefon yoki Telegram orqali aloqaga chiqadi.
+            </p>
+          </div>
+
+          <!-- Savollar bo'lsa bog'lanish bloki -->
+          <div class="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 text-[11px] text-amber-900 dark:text-amber-300 flex items-start gap-2">
+            <i data-lucide="help-circle" class="w-4 h-4 text-amber-500 shrink-0 mt-0.5"></i>
+            <div>
+              <strong>Savollaringiz bormi?</strong> Buyurtmani yuborganingizdan so'ng Telegram tugmasi orqali do'kon egasiga bevosita murojaat qilishingiz mumkin.
+            </div>
+          </div>
+
+          <button type="submit" id="submit-order-btn" class="w-full mt-4 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm transition shadow-lg flex items-center justify-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>Buyurtmani tasdiqlash</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Muvaffaqiyatli buyurtma holati -->
+      <div id="checkout-success-container" class="py-6 text-center space-y-4 hidden">
+        <div class="w-16 h-16 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+          <i data-lucide="check" class="w-8 h-8"></i>
+        </div>
+        <h3 class="text-xl font-bold text-zinc-900 dark:text-white">Buyurtma Qabul Qilindi!</h3>
+        <p id="order-number" class="text-sm font-mono font-bold text-indigo-600 dark:text-indigo-400"></p>
+        <p id="order-summary-text" class="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto leading-relaxed"></p>
+
+        <!-- Telegram Avtomatik Xabarnoma Holati -->
+        <div id="telegram-auto-status" class="p-3.5 rounded-2xl text-xs max-w-sm mx-auto flex items-center justify-center gap-2 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+          <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-indigo-500"></i>
+          <span>Telegram botga avtomatik xabar yuborilmoqda...</span>
+        </div>
+
+        <div class="pt-2 flex flex-col gap-2">
+          <!-- Telegram orqali yuborish zaxira tugmasi -->
+          <a id="send-telegram-btn" target="_blank" href="#" class="w-full py-3 rounded-2xl bg-[#229ED9] hover:bg-[#1e8ec3] text-white font-bold text-xs flex items-center justify-center gap-2 shadow">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Telegram operatorga ochish</span>
+          </a>
+          <button id="finish-order-btn" class="w-full py-3 rounded-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold text-xs">
+            Bosh sahifaga qaytish
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- ========================================================
+       🎨 VIZUAL DO'KON MUHARRIRI ELEMENTLARI & MODALLAR
+       ======================================================== -->
+
+  <!-- 1. Floating Visual Builder Dock (Pastki boshqaruv paneli) -->
+  <div id="visual-builder-dock" class="hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-4xl p-2.5 sm:p-3 rounded-3xl bg-zinc-950/95 backdrop-blur-xl border border-indigo-500/50 shadow-2xl text-white flex flex-wrap items-center justify-between gap-2.5 transition-all">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center shadow">
+        <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="font-extrabold text-xs tracking-tight">Do'kon Vizual Muharriri</span>
+          <span id="dock-edit-status" class="px-2 py-0.2 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-[9px] uppercase border border-emerald-500/30">Faol</span>
+        </div>
+        <p class="text-[10px] text-zinc-400 hidden sm:block">Istalgan matn, toifa yoki bo'lim ustiga bosing</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-1.5 overflow-x-auto">
+      <button type="button" id="dock-layout-btn" class="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold flex items-center gap-1.5 border border-zinc-700 text-zinc-200 transition" title="Bo'limlar tartibini o'zgartirish">
+        <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-400"></i>
+        <span class="hidden md:inline">Bo'limlar Tartibi</span>
+      </button>
+
+      <button type="button" id="dock-add-cat-btn" class="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold flex items-center gap-1.5 border border-zinc-700 text-zinc-200 transition" title="Yangi katalog toifasi qo'shish">
+        <i data-lucide="tag" class="w-3.5 h-3.5 text-purple-400"></i>
+        <span>+ Toifa</span>
+      </button>
+
+      <button type="button" id="dock-add-prod-btn" class="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold flex items-center gap-1.5 border border-zinc-700 text-zinc-200 transition" title="Yangi tovar qo'shish">
+        <i data-lucide="plus" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <span>+ Mahsulot</span>
+      </button>
+
+      <button type="button" id="dock-save-btn" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-lg transition">
+        <i data-lucide="check" class="w-3.5 h-3.5"></i>
+        <span>Saqlash</span>
+      </button>
+
+      <a href="admin.html" id="dock-admin-link" class="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-semibold text-zinc-400 hover:text-white border border-zinc-800 flex items-center gap-1 transition">
+        <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Admin</span>
+      </a>
+
+      <button type="button" id="dock-close-btn" class="p-1.5 rounded-xl bg-zinc-800/80 hover:bg-rose-950 text-zinc-400 hover:text-rose-400 text-xs transition" title="Tahrir rejimidan chiqish">
+        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+      </button>
+    </div>
+  </div>
+
+
+
+  <!-- 3. Toifani tahrirlash / yangi toifa modali -->
+  <div id="visual-category-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="relative w-full max-w-md p-6 rounded-3xl bg-zinc-900 border border-zinc-800 shadow-2xl space-y-4 text-white">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-indigo-600/30 text-indigo-400 flex items-center justify-center">
+            <i data-lucide="tag" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 id="cat-modal-title" class="font-bold text-sm">Toifani Tahrirlash</h3>
+            <p class="text-[11px] text-zinc-400">Katalog nomi va ikonkasini o'zgartiring</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeVisualCategoryModal()" class="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="visual-category-form" class="space-y-4 text-xs">
+        <input type="hidden" id="cat-modal-index" value="-1">
+        <input type="hidden" id="cat-modal-orig-id" value="">
+
+        <div>
+          <label class="block font-semibold text-zinc-300 mb-1">Toifa Nomi *</label>
+          <input type="text" id="cat-modal-name" required placeholder="Masalan: Noutbuklar va Kompyuterlar" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-zinc-300 mb-1">Identifikator (Slug / ID) *</label>
+          <input type="text" id="cat-modal-id" required placeholder="laptops" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white font-mono outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-zinc-300 mb-1.5">Ikonka tanlang:</label>
+          <input type="hidden" id="cat-modal-icon" value="tag">
+          <div id="cat-icon-picker-grid" class="grid grid-cols-6 gap-2 p-2 rounded-2xl bg-zinc-950 border border-zinc-800 max-h-36 overflow-y-auto">
+            <!-- Dinamik generatsiya qilinadi -->
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-zinc-800">
+          <button type="button" id="cat-modal-delete-btn" class="px-3 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 font-semibold flex items-center gap-1 transition">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>O'chirish</span>
+          </button>
+          <div class="flex gap-2">
+            <button type="button" onclick="closeVisualCategoryModal()" class="px-4 py-2 rounded-xl bg-zinc-800 text-zinc-300 hover:text-white">Bekor qilish</button>
+            <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow">Saqlash</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Bo'limlar tartibi va joylashuvi modali (Layout Manager) -->
+  <div id="visual-layout-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="relative w-full max-w-lg p-6 rounded-3xl bg-zinc-900 border border-zinc-800 shadow-2xl space-y-4 text-white">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-indigo-600/30 text-indigo-400 flex items-center justify-center">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm">Do'kon Bo'limlari Tartibi & Joylashuvi</h3>
+            <p class="text-[11px] text-zinc-400">Bo'limlarni istagan o'ringa suring yoki yashiring</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeVisualLayoutModal()" class="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div id="layout-sections-list" class="space-y-2 max-h-80 overflow-y-auto pr-1">
+        <!-- JS orqali generatsiya qilinadi -->
+      </div>
+
+      <div class="flex justify-between items-center pt-3 border-t border-zinc-800">
+        <button type="button" onclick="resetSectionOrder()" class="text-xs text-zinc-400 hover:text-white underline">Standart tartibga qaytarish</button>
+        <button type="button" onclick="closeVisualLayoutModal()" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow">Tayyor</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Tezkor element tahrirlash modali -->
+  <div id="visual-element-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="relative w-full max-w-md p-6 rounded-3xl bg-zinc-900 border border-zinc-800 shadow-2xl space-y-4 text-white">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-indigo-600/30 text-indigo-400 flex items-center justify-center">
+            <i data-lucide="edit-2" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 id="elem-modal-title" class="font-bold text-sm">Matnni Tahrirlash</h3>
+            <p class="text-[11px] text-zinc-400">O'zgartirish darhol do'konda aks etadi</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeVisualElementModal()" class="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="visual-element-form" class="space-y-4 text-xs">
+        <input type="hidden" id="elem-modal-key" value="">
+        
+        <div>
+          <label id="elem-modal-label" class="block font-semibold text-zinc-300 mb-1.5">Yangi Matn:</label>
+          <textarea id="elem-modal-input" rows="4" required class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white outline-none focus:border-indigo-500 leading-relaxed"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-zinc-800">
+          <button type="button" onclick="closeVisualElementModal()" class="px-4 py-2 rounded-xl bg-zinc-800 text-zinc-300 hover:text-white">Bekor qilish</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow">Saqlash</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST XABARLAR KONTEYNERI -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Skriptlar -->
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

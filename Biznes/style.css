@@ -1,0 +1,232 @@
+/* NOVA Market - Minimalist & Modern E-commerce Styles */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --accent: #ec4899;
+}
+
+* {
+  font-family: var(--font-main);
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.6);
+}
+
+/* Glassmorphism Classes */
+.glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dark .glass {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+.dark .glass-card {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+/* Shimmer animation for badges */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.shimmer-badge {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 2.5s infinite;
+}
+
+/* Heart pop animation */
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+.heart-pop {
+  animation: heartPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Soft hover scale */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.08);
+}
+.dark .hover-lift:hover {
+  box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.4);
+}
+
+/* Image zoom inside card */
+.img-zoom-container {
+  overflow: hidden;
+}
+.img-zoom-container img {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.img-zoom-container:hover img {
+  transform: scale(1.06);
+}
+
+/* Drawer transitions */
+.drawer-enter {
+  transform: translateX(100%);
+}
+.drawer-enter-active {
+  transform: translateX(0);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Pulse badge */
+@keyframes softPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.soft-pulse {
+  animation: softPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Line clamp 2 */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Hero gradient glow */
+.hero-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.12) 0%, rgba(236, 72, 153, 0.06) 45%, transparent 70%);
+}
+
+.dark .hero-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.22) 0%, rgba(236, 72, 153, 0.12) 50%, transparent 80%);
+}
+
+/* ========================================================
+   🎨 VIZUAL DO'KON MUHARRIRI STILLARI (Visual Store Builder)
+   ======================================================== */
+.visual-edit-mode [data-editable] {
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  outline: 2px dashed rgba(99, 102, 241, 0.45);
+  outline-offset: 4px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.visual-edit-mode [data-editable]:hover {
+  outline: 2px solid #6366f1;
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+.visual-edit-mode [data-editable]::after {
+  content: '✏️';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 4px;
+  background: #4f46e5;
+  color: white;
+  border-radius: 9999px;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+}
+
+.visual-edit-mode [data-editable]:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.visual-section-container {
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.visual-edit-mode .visual-section-container {
+  border: 2px dashed rgba(99, 102, 241, 0.35);
+  border-radius: 2rem;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.visual-section-toolbar {
+  display: none;
+}
+
+.visual-edit-mode .visual-section-toolbar {
+  display: flex;
+}
+
+/* Icon picker buttons */
+.icon-picker-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.icon-picker-btn:hover, .icon-picker-btn.active {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.2);
+  color: white;
+}
+
